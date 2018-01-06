@@ -2,6 +2,7 @@ package com.kang.accessibilityservice;
 
 
 import android.app.Application;
+import android.content.Intent;
 
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.FormatStrategy;
@@ -14,6 +15,24 @@ import com.orhanobut.logger.PrettyFormatStrategy;
  */
 
 public class MyApplication extends Application {
+
+    /**
+     * 共享从startActivityForResult返回的intent
+     * 必须用这个intent才能创建MediaProjection
+     * {@link android.media.projection.MediaProjectionManager#getMediaProjection(int, Intent)}
+     */
+    private Intent data;
+
+    public Intent getData()
+    {
+        return data;
+    }
+
+    public void setData(Intent resultData)
+    {
+        data = resultData;
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
