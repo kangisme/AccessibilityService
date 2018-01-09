@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.orhanobut.logger.Logger;
 
+import static android.provider.Settings.ACTION_MANAGE_OVERLAY_PERMISSION;
 import static com.kang.accessibilityservice.utils.NavigationBar.getNavigationBarHeight;
 
 public class MainActivity extends AppCompatActivity {
@@ -57,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
                 String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/asd.png";
                 Logger.d(path);
                 try {
-                    runtime.exec("screencap -p " + path);
+                    runtime.exec("input swipe 500 300 502 302 800");
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -66,6 +67,15 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.open_window).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+//                if(Build.VERSION.SDK_INT >= 23) {
+//                    //没有悬浮窗权限m,去开启悬浮窗权限
+//                    try {
+//                        Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
+//                        startActivity(intent);
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
+//                }
                 requestCapturePermission();
             }
         });
