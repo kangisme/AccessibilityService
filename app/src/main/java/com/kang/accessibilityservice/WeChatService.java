@@ -19,11 +19,14 @@ import com.orhanobut.logger.Logger;
 
 public class WeChatService extends AccessibilityService {
 
-    //微信6.6.1红包id
-    private final String RED_PACKET_ID = "com.tencent.mm:id/ada";
+    //微信6.6.6红包id
+    private final String RED_PACKET_ID = "com.tencent.mm:id/ad8";
 
-    //微信6.6.1红包“开”id
-    private final String RED_PACKET_OPENID = "com.tencent.mm:id/c2i";
+    //微信6.6.6红包“开”id
+    private final String RED_PACKET_OPENID = "com.tencent.mm:id/c31";
+
+    //微信6.6.6红包“查看红包”id，用于判断红包是否被领取
+    private final String IS_READ_PACKET_OPENED = "com.tencent.mm:id/ae_";
 
     @Override
     protected void onServiceConnected() {
@@ -61,39 +64,34 @@ public class WeChatService extends AccessibilityService {
                 eventText = "TYPE_WINDOW_STATE_CHANGED";
                 String className = event.getClassName().toString();
                 AccessibilityNodeInfo rootInActiveWindow = getRootInActiveWindow();
-                if (rootInActiveWindow == null)
-                {
+                if (rootInActiveWindow == null) {
                     Toast.makeText(WeChatService.this, "发生未知错误", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 //聊天窗口界面
-                if ("com.tencent.mm.ui.LauncherUI".equals(className))
-                {
+                if ("com.tencent.mm.ui.LauncherUI".equals(className)) {
                     List<AccessibilityNodeInfo> list = rootInActiveWindow.findAccessibilityNodeInfosByViewId(RED_PACKET_ID);
-                    if (list == null)
-                    {
+                    if (list == null) {
                         Logger.e("red packet list is null");
                         return;
                     }
                     int size = list.size();
-                    if (size > 0)
-                    {
+                    if (size > 0) {
                         //获取最新一个红包
                         AccessibilityNodeInfo lastInfo = list.get(size - 1);
-                        //模拟点击事件
-                        lastInfo.performAction(AccessibilityNodeInfo.ACTION_CLICK);
-                    }
-                    else
-                    {
+                        List<AccessibilityNodeInfo> temp = lastInfo.findAccessibilityNodeInfosByText("领取红包");
+                        if (temp == null || temp.size() == 0) {
+                            //模拟点击事件
+                            lastInfo.performAction(AccessibilityNodeInfo.ACTION_CLICK);
+                        }
+                    } else {
                         Logger.d("red packet list is empty");
                     }
                 }
                 //拆红包界面
-                else if ("com.tencent.mm.plugin.luckymoney.ui.LuckyMoneyReceiveUI".equals(className))
-                {
+                else if ("com.tencent.mm.plugin.luckymoney.ui.LuckyMoneyReceiveUI".equals(className)) {
                     List<AccessibilityNodeInfo> list = rootInActiveWindow.findAccessibilityNodeInfosByViewId(RED_PACKET_OPENID);
-                    if (list == null || list.size() == 0)
-                    {
+                    if (list == null || list.size() == 0) {
                         Toast.makeText(WeChatService.this, "无法打开红包,请更新版本", Toast.LENGTH_SHORT).show();
                         return;
                     }

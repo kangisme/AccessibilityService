@@ -8,24 +8,14 @@
     android:layout_height="match_parent"
     tools:context="com.kang.accessibilityservice.MainActivity">
 
-    <Button
+    <TextView
         android:text="Open Service"
+        android:padding="20dp"
+        android:textSize="30dp"
+        android:textColor="@color/colorPrimary"
+        android:background="@color/colorAccent"
+        android:gravity="center"
         android:id="@+id/open_service"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-    <Button
-        android:id="@+id/run"
-        android:text="Run"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-    <Button
-        android:id="@+id/open_window"
-        android:text="打开悬浮窗"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-    <Button
-        android:id="@+id/get"
-        android:text="Get"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="match_parent"/>
 </LinearLayout>
