@@ -2,7 +2,6 @@ package com.kang.accessibilityservice;
 
 
 import android.app.Application;
-import android.content.Intent;
 
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.FormatStrategy;
@@ -23,7 +22,7 @@ public class MyApplication extends Application {
                 .showThreadInfo(false)
                 .tag("accessibility")
                 .build();
-        Logger.addLogAdapter(new AndroidLogAdapter(formatStrategy){
+        Logger.addLogAdapter(new AndroidLogAdapter(formatStrategy) {
             @Override
             public boolean isLoggable(int priority, String tag) {
                 return BuildConfig.DEBUG;

@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">AccessibilityService</string>
-    <string name="accessibility_description">微信助手必须开启这个服务才能使用</string>
+    <string name="accessibility_name">微信自动抢红包</string>
+    <string name="accessibility_description">微信自动抢红包必须开启这个服务才能使用</string>
 </resources>

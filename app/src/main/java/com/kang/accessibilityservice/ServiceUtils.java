@@ -16,10 +16,9 @@ public class ServiceUtils {
 
     //检查服务是否开启
     public static boolean isServiceEnabled(Context context) {
-        AccessibilityManager accessibilityManager = (AccessibilityManager)context.getSystemService(Context.ACCESSIBILITY_SERVICE);
+        AccessibilityManager accessibilityManager = (AccessibilityManager) context.getSystemService(Context.ACCESSIBILITY_SERVICE);
 
-        if (accessibilityManager == null)
-        {
+        if (accessibilityManager == null) {
             Logger.e("accessibilityManager is null");
             return false;
         }
