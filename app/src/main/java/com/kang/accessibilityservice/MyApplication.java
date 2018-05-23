@@ -15,7 +15,10 @@ import com.orhanobut.logger.PrettyFormatStrategy;
 
 public class MyApplication extends Application {
 
+    private static MyApplication sApplication;
+
     @Override
+
     public void onCreate() {
         super.onCreate();
         FormatStrategy formatStrategy = PrettyFormatStrategy.newBuilder()
@@ -28,5 +31,9 @@ public class MyApplication extends Application {
                 return BuildConfig.DEBUG;
             }
         });
+    }
+
+    public static MyApplication getApplication() {
+        return sApplication;
     }
 }

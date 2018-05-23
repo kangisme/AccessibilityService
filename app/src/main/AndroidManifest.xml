@@ -23,6 +23,14 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".SettingActivity">
+
+        </activity>
+
+        <activity android:name=".AboutActivity">
+
+        </activity>
+
         <service android:name=".WeChatService"
                  android:label="@string/accessibility_name"
                  android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE"

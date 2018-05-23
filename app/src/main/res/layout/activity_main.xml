@@ -8,9 +8,28 @@
     <TextView
         android:id="@+id/open_service"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Open"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:text="@string/open"
         android:gravity="center"
-        android:textColor="#aa6600"
-        android:textSize="50sp"/>
+        android:textColor="@color/text_color"
+        android:textSize="45sp"/>
+    <TextView
+        android:id="@+id/setting"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:text="@string/setting"
+        android:gravity="center"
+        android:textColor="@color/text_color"
+        android:textSize="45sp"/>
+    <TextView
+        android:id="@+id/about"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:text="@string/about"
+        android:gravity="center"
+        android:textColor="@color/text_color"
+        android:textSize="45sp"/>
 </LinearLayout>
