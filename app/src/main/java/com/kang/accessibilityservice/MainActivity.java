@@ -19,6 +19,7 @@ public class MainActivity extends Activity {
         findViewById(R.id.open_service).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                startService(new Intent(MainActivity.this, ForegroundService.class));
                 if (!ServiceUtils.isServiceEnabled(MainActivity.this)) {
                     //打开系统无障碍设置界面
                     Intent accessibleIntent = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
@@ -48,5 +49,13 @@ public class MainActivity extends Activity {
         if (clipboardManager != null) {
             clipboardManager.setPrimaryClip(data);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_HOME);
+        startActivity(intent);
     }
 }

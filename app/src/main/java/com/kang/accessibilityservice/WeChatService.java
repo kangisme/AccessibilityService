@@ -19,19 +19,22 @@ import com.orhanobut.logger.Logger;
 
 public class WeChatService extends AccessibilityService {
 
-    //微信6.6.6红包id
-    private static final String RED_PACKET_ID = "com.tencent.mm:id/ad8";
+    //微信7.0.0红包id
+    private static final String RED_PACKET_ID = "com.tencent.mm:id/ao4";
 
-    //微信6.6.6红包“开”id
-    private static final String RED_PACKET_OPENID = "com.tencent.mm:id/c31";
+    //微信7.0.0红包“开”id
+    private static final String RED_PACKET_OPENID = "com.tencent.mm:id/cv0";
     //中间页面，拆红包页面
-    private static final String LUCKY_MONEY_RECEIVE_UI = "com.tencent.mm.plugin.luckymoney.ui.LuckyMoneyReceiveUI";
+    private static final String LUCKY_MONEY_RECEIVE_UI = "com.tencent.mm.plugin.luckymoney.ui.LuckyMoneyNotHookReceiveUI";
     //红包详情页面
     private static final String LUCKY_MONEY_DETAIL_UI = "com.tencent.mm.plugin.luckymoney.ui.LuckyMoneyDetailUI";
-    //微信6.6.6红包详情页面返回箭头id
-    private static final String BACK_TO_LAUNCHER = "com.tencent.mm:id/i1";
-    //微信6.6.6红包“查看红包”id，用于判断红包是否被领取
+    //微信7.0.0红包详情页面返回箭头id
+    private static final String BACK_TO_LAUNCHER = "com.tencent.mm:id/k4";
+    //微信7.0.0红包“查看红包”id，用于判断红包是否被领取
     private final String IS_READ_PACKET_OPENED = "com.tencent.mm:id/ae_";
+
+    private static final String IS_EMPTY = "";
+    private static final String IS_EMPTY_BACK_ID = "com.tencent.mm:id/cs9";
 
     @Override
     protected void onServiceConnected() {
@@ -60,11 +63,18 @@ public class WeChatService extends AccessibilityService {
                     Logger.d("拆红包界面");
                     AccessibilityNodeInfo nodeInfo = event.getSource();
                     List<AccessibilityNodeInfo> list = nodeInfo.findAccessibilityNodeInfosByViewId(RED_PACKET_OPENID);
-                    if (list.isEmpty()) {
+                    if (!list.isEmpty()) {
+                        AccessibilityNodeInfo info = list.get(0);
+                        info.performAction(AccessibilityNodeInfo.ACTION_CLICK);
+                        nodeInfo.recycle();
+                        return;
+                    }
+                    List<AccessibilityNodeInfo> list2 = nodeInfo.findAccessibilityNodeInfosByViewId(IS_EMPTY_BACK_ID);
+                    if (list2.isEmpty()) {
                         Toast.makeText(WeChatService.this, "无法打开红包,请更新版本", Toast.LENGTH_SHORT).show();
                         return;
                     }
-                    AccessibilityNodeInfo info = list.get(0);
+                    AccessibilityNodeInfo info = list2.get(0);
                     info.performAction(AccessibilityNodeInfo.ACTION_CLICK);
                     nodeInfo.recycle();
                 }
@@ -79,6 +89,10 @@ public class WeChatService extends AccessibilityService {
                 }
                 break;
             case AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED:
+                String name = event.getClassName().toString();
+                if (!"android.widget.ListView".equals(name)) {
+                    return;
+                }
                 AccessibilityNodeInfo nodeInfo = event.getSource();
                 List<AccessibilityNodeInfo> list = nodeInfo.findAccessibilityNodeInfosByViewId(RED_PACKET_ID);
                 if (list.isEmpty()) {
@@ -89,10 +103,19 @@ public class WeChatService extends AccessibilityService {
                         Collections.reverse(list);
                     }
                     for (AccessibilityNodeInfo temp : list) {
-                        List<AccessibilityNodeInfo> infoList = temp.findAccessibilityNodeInfosByText("领取红包");
-                        if (!infoList.isEmpty()) {
-                            temp.performAction(AccessibilityNodeInfo.ACTION_CLICK);
+                        List<AccessibilityNodeInfo> info = temp.findAccessibilityNodeInfosByText("微信红包");
+                        if (info.isEmpty()) {
+                            continue;
                         }
+                        List<AccessibilityNodeInfo> infoList = temp.findAccessibilityNodeInfosByText("已领取");
+                        if (!infoList.isEmpty()) {
+                            continue;
+                        }
+                        List<AccessibilityNodeInfo> infos = temp.findAccessibilityNodeInfosByText("已被领完");
+                        if (!infos.isEmpty()) {
+                            continue;
+                        }
+                        temp.performAction(AccessibilityNodeInfo.ACTION_CLICK);
                     }
                 }
                 nodeInfo.recycle();
